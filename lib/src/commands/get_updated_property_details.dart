@@ -5,16 +5,13 @@ import 'package:xml2json/xml2json.dart';
 import 'base_zillow_command.dart';
 import 'package:zillow/client.dart';
 
-class GetSearchResultsCommand extends BaseZillowCommand {
-  final name = "get_search_results";
-  final description = "Gets Search Results\n"
-      "https://www.zillow.com/howto/api/GetSearchResults.htm";
+class GetUpdatedPropertyDetails extends BaseZillowCommand {
+  final name = "get_updated_property_details";
+  final description = "For a specified property, the GetUpdatedPropertyDetails API returns all of the home facts that have been edited by the home's owner or agent.\n"
+      "https://www.zillow.com/howto/api/GetUpdatedPropertyDetails.htm";
 
-  GetSearchResultsCommand() {
-    argParser.addOption("address", help: "Address");
-    argParser.addOption("citystatezip", help: "City, State Zip");
-    argParser.addFlag("rentzestimate",
-        negatable: false, help: "Include Rent Zestimate");
+  GetUpdatedPropertyDetails() {
+    argParser.addOption("zpid", help: "Zillow Property Id");
   }
 
   @override
@@ -23,13 +20,10 @@ class GetSearchResultsCommand extends BaseZillowCommand {
 
     var _client = new Client();
     var zwsid = argResults['zwsid'];
-    var address = argResults['address'];
-    var citystatezip = argResults['citystatezip'];
-    var rentzestimate = argResults['rentzestimate'];
+    var zpid = argResults['zpid'];
     var zillowClient = new ZillowClient(_client, zwsid);
 
-    var result = await zillowClient.getSearchResults(address, citystatezip,
-        rentzestimate: rentzestimate);
+    var result = await zillowClient.getUpdatedPropertyDetails(zpid);
     _client.close();
     var j = new JsonEncoder.withIndent("  ");
 

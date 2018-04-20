@@ -5,12 +5,17 @@ import 'package:xml2json/xml2json.dart';
 import 'base_zillow_command.dart';
 import 'package:zillow/client.dart';
 
-class GetSearchResultsCommand extends BaseZillowCommand {
-  final name = "get_search_results";
-  final description = "Gets Search Results\n"
-      "https://www.zillow.com/howto/api/GetSearchResults.htm";
+class GetDeepSearchResultsCommand extends BaseZillowCommand {
+  final name = "get_deep_search_results";
+  final description =
+      "The GetDeepSearchResults API finds a property for a specified address. "
+      "The result set returned contains the full address(s), zpid and "
+      "Zestimate data that is provided by the GetSearchResults API. Moreover, "
+      "this API call also gives rich property data like lot size, year built, "
+      "bath/beds, last sale details etc. \n\n"
+      "https://www.zillow.com/howto/api/GetDeepSearchResults.htm";
 
-  GetSearchResultsCommand() {
+  GetDeepSearchResultsCommand() {
     argParser.addOption("address", help: "Address");
     argParser.addOption("citystatezip", help: "City, State Zip");
     argParser.addFlag("rentzestimate",
@@ -28,7 +33,7 @@ class GetSearchResultsCommand extends BaseZillowCommand {
     var rentzestimate = argResults['rentzestimate'];
     var zillowClient = new ZillowClient(_client, zwsid);
 
-    var result = await zillowClient.getSearchResults(address, citystatezip,
+    var result = await zillowClient.getDeepSearchResults(address, citystatezip,
         rentzestimate: rentzestimate);
     _client.close();
     var j = new JsonEncoder.withIndent("  ");

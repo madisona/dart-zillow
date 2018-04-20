@@ -5,14 +5,19 @@ import 'package:xml2json/xml2json.dart';
 import 'base_zillow_command.dart';
 import 'package:zillow/client.dart';
 
-class GetSearchResultsCommand extends BaseZillowCommand {
-  final name = "get_search_results";
-  final description = "Gets Search Results\n"
-      "https://www.zillow.com/howto/api/GetSearchResults.htm";
+class GetDeepComps extends BaseZillowCommand {
+  final name = "get_deep_comps";
+  final description =
+      "The GetDeepComps API returns a list of comparable recent sales for a "
+      "specified property. The result set returned contains the address, "
+      "Zillow property identifier, and Zestimate for the comparable properties "
+      "and the principal property for which the comparables are being retrieved."
+      "This API call also returns rich property data for the comparables.\n\n"
+      "https://www.zillow.com/howto/api/GetDeepComps.htm";
 
-  GetSearchResultsCommand() {
-    argParser.addOption("address", help: "Address");
-    argParser.addOption("citystatezip", help: "City, State Zip");
+  GetDeepComps() {
+    argParser.addOption("zpid", help: "Zillow Property Id");
+    argParser.addOption("count", help: "Comparable Count", defaultsTo: "5");
     argParser.addFlag("rentzestimate",
         negatable: false, help: "Include Rent Zestimate");
   }
@@ -23,13 +28,13 @@ class GetSearchResultsCommand extends BaseZillowCommand {
 
     var _client = new Client();
     var zwsid = argResults['zwsid'];
-    var address = argResults['address'];
-    var citystatezip = argResults['citystatezip'];
+    var zpid = argResults['zpid'];
+    var count = argResults['count'];
     var rentzestimate = argResults['rentzestimate'];
     var zillowClient = new ZillowClient(_client, zwsid);
 
-    var result = await zillowClient.getSearchResults(address, citystatezip,
-        rentzestimate: rentzestimate);
+    var result = await zillowClient.getDeepComps(zpid,
+        count: count, rentzestimate: rentzestimate);
     _client.close();
     var j = new JsonEncoder.withIndent("  ");
 

@@ -1,3 +1,4 @@
+// todo: error codes are different based on the API
 
 //ERROR CODE	DESCRIPTION	RESOLUTION
 //0	Request successfully processed
@@ -13,3 +14,4 @@
 //505	Timeout	Your request timed out. The server could be busy or unavailable. Try again later.
 //506	Address string too long	If address is valid, try using abbreviations.
 //507	No exact match found.	Verify that the given address is correct.
+//508	No exact match found for input address.
